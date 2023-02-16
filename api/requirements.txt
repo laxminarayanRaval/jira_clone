@@ -1,0 +1,5 @@
+fastapi==0.92.0
+FastAPI-SQLAlchemy==0.2.1
+alembic==1.9.3
+psycopg2-binary==2.9.5
+uvicorn==0.20.0
