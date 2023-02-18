@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2AuthorizationCodeBearer
 
-from app.config import settings, google_credentials
+from app.config import settings, google_credentials, email_configuration, template_env
+from app.schema import EmailSchema
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, JSONResponse
+from fastapi_mail import MessageSchema, FastMail, MessageType
 
 
 # Google OAuth2 credentials
@@ -95,3 +97,19 @@ async def login_with_google_callback(code: str):
 #         credentials.token, requests.Request(), CLIENT_ID
 #     )
 #     return {"email": token["email"], "name": token["name"]}
+
+
+@app.post("/email")
+async def email_send(email: EmailSchema) -> JSONResponse:
+    html = """<h1>Hi this test mail, thanks for using Fastapi-mail</h1> """
+    # template = template_env.get_template(email.template_name)
+    # html = template.render(user_name=email.user_name, subject=email.subject)
+    message = MessageSchema(
+        subject=email.subject,
+        recipients=email.mail_to,  # email.dict().get("email"),
+        body=html,
+        subtype=MessageType.html,
+    )
+    fm = FastMail(email_configuration)
+    await fm.send_message(message)
+    return JSONResponse(status_code=200, content={"message": "email has been sent"})
