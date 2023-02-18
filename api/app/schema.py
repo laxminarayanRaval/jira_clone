@@ -1,5 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 import datetime
+
+
+class EmailSchema(BaseModel):
+    mail_to: list[EmailStr]
+    subject: str
+    # template_name: str
+    # user_name: str
+    # project_name: str
 
 
 class BaseShowSchema(BaseModel):

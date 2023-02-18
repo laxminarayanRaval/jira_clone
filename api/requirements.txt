@@ -4,3 +4,4 @@ alembic==1.9.3
 psycopg2-binary==2.9.5
 uvicorn==0.20.0
 google-auth-oauthlib==1.0.0
+fastapi-mail==1.2.5

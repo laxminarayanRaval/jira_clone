@@ -1,4 +1,7 @@
 import os
+from fastapi_mail import ConnectionConfig
+from jinja2 import Environment, select_autoescape, PackageLoader
+
 
 google_credentials = {
     "web": {
@@ -15,6 +18,26 @@ google_credentials = {
         "javascript_origins": ["http://127.0.0.1:8008"],
     }
 }
+
+email_configuration = ConnectionConfig(
+    MAIL_USERNAME="simbasingh1999@gmail.com",
+    MAIL_PASSWORD="qwjiusbmxhdjpozb",
+    MAIL_FROM="simbasingh1999@gmail.com",
+    MAIL_PORT=587,
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_FROM_NAME="Shibham singh",
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
+    USE_CREDENTIALS=True,
+    VALIDATE_CERTS=True,
+)
+
+
+# first parameter is app name
+# here in package loader second parameter is path of tempalte folder if we don't provide it will take templates
+template_env = Environment(
+    loader=PackageLoader("app"), autoescape=select_autoescape(["html", "xml"])
+)
 
 
 class Settings:
