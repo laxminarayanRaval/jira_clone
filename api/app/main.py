@@ -4,6 +4,8 @@ from fastapi.security import OAuth2AuthorizationCodeBearer
 
 from app.config import settings, google_credentials, email_configuration, template_env
 from app.schema import EmailSchema
+from app.routers import api_router
+from app.models import create_tables
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
@@ -43,6 +45,9 @@ flow.redirect_uri = "http://127.0.0.1:8008/login/google/callback"
 
 def start_application():
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    app.include_router(api_router)
+    # configure_static(app)
+    create_tables()  # new
     return app
 
 
