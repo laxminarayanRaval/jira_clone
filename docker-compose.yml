@@ -13,7 +13,7 @@ services:
     environment:
       DB_USERNAME: mr_lx
       DB_PASSWORD: lx_is_lx
-      DB_HOST: localhost
+      DB_HOST: jira_clone_db
       DB_PORT: 5432
       DB_NAME: jira_clone
 
