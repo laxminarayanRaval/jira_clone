@@ -1,28 +1,22 @@
-from fastapi import FastAPI,Depends
+from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2AuthorizationCodeBearer
 
 from app.config import settings, google_credentials, email_configuration, template_env
 from app.schema import EmailSchema
 from app.routers import api_router
-from app.models import create_tables
+# from app.models import create_tables
 
-from google.oauth2.credentials import Credentials
+
 from google_auth_oauthlib.flow import Flow
+from googleapiclient.discovery import build
 from starlette.responses import RedirectResponse, JSONResponse
 from fastapi_mail import MessageSchema, FastMail, MessageType
 
 
 # Google OAuth2 credentials
-# CLIENT_ID = google_credentials.get(
-#     "client_id",
-#     "1059122565838-ssslohu20habg3ie5g66ov750jo7dq0p.apps.googleusercontent.com",
-# )
-# CLIENT_SECRET = google_credentials.get(
-#     "client_secret", "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"
-# )
-# REDIRECT_URI = google_credentials.get("redirect_uris")
-# SCOPES = ["openid", "email", "profile"]
+CLIENT_ID = google_credentials["web"]["client_id"]
+CLIENT_SECRET = google_credentials["web"]["client_secret"]
 
 
 # OAuth2 authorization code flow
@@ -88,20 +82,14 @@ async def login_with_google():
 async def login_with_google_callback(code: str):
     flow.fetch_token(code=code)
     credentials = flow.credentials
-    return {"access_token": credentials.token}
+    user_info = get_user_info(credentials)
+    return user_info
 
 
-@app.get("/me")
-async def get_user_info(credentials: Credentials = Depends(oauth2_scheme)):
-    # Use the credentials to get the user's information
-    # Here is an example of using the Google API to get the user's email and name:
-    from google.oauth2 import id_token
-    from google.auth.transport import requests
-
-    token = id_token.verify_oauth2_token(
-        credentials.token, requests.Request(), google_credentials.get("web").get("client_id")
-    )
-    return {"email": token["email"], "name": token["name"]}
+def get_user_info(credentials):
+    service = build("oauth2", "v2", credentials=credentials)
+    user_info = service.userinfo().get().execute()
+    return user_info  # idinfo
 
 
 @app.post("/email")
