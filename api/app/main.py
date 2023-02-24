@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2AuthorizationCodeBearer
 
@@ -37,10 +37,10 @@ flow = Flow.from_client_config(
 
 flow.redirect_uri = "http://127.0.0.1:8008/login/google/callback"
 
-# oauth2_scheme = OAuth2AuthorizationCodeBearer(
-#     authorizationUrl=flow.authorization_url(),
-#     tokenUrl=flow.token_url(),
-# )
+oauth2_scheme = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=google_credentials.get("web").get("auth_uri"),
+    tokenUrl=google_credentials.get("web").get("token_uri"),
+)
 
 
 def start_application():
@@ -91,17 +91,17 @@ async def login_with_google_callback(code: str):
     return {"access_token": credentials.token}
 
 
-# @app.get("/me")
-# async def get_user_info(credentials: Credentials = Depends(oauth2_scheme)):
-#     # Use the credentials to get the user's information
-#     # Here is an example of using the Google API to get the user's email and name:
-#     from google.oauth2 import id_token
-#     from google.auth.transport import requests
+@app.get("/me")
+async def get_user_info(credentials: Credentials = Depends(oauth2_scheme)):
+    # Use the credentials to get the user's information
+    # Here is an example of using the Google API to get the user's email and name:
+    from google.oauth2 import id_token
+    from google.auth.transport import requests
 
-#     token = id_token.verify_oauth2_token(
-#         credentials.token, requests.Request(), CLIENT_ID
-#     )
-#     return {"email": token["email"], "name": token["name"]}
+    token = id_token.verify_oauth2_token(
+        credentials.token, requests.Request(), google_credentials.get("web").get("client_id")
+    )
+    return {"email": token["email"], "name": token["name"]}
 
 
 @app.post("/email")
