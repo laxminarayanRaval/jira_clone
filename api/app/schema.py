@@ -40,8 +40,29 @@ class IssueBaseSchema(BaseModel):
     descriptionText: str
     estimate: int
     timeSpent: int
-    timeRemaining: int
+    timeRemaining: int | None
 
 
 class IssueShowSchema(IssueBaseSchema, BaseShowSchema):
+    ...
+
+
+class CommentBaseSchema(BaseModel):
+    body: str
+    userId: int
+    issueId: int
+
+
+class CommentShowSchema(CommentBaseSchema, BaseShowSchema):
+    ...
+
+
+class UserBaseSchema(BaseModel):
+    name: str
+    email: str
+    avatarUrl: str
+    projectId: int | None
+
+
+class UserShowSchema(UserBaseSchema, BaseShowSchema):
     ...

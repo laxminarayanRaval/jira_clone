@@ -1,4 +1,5 @@
 import os
+from pydantic import BaseSettings
 from fastapi_mail import ConnectionConfig
 from jinja2 import Environment, select_autoescape, PackageLoader
 
@@ -40,7 +41,7 @@ template_env = Environment(
 )
 
 
-class Settings:
+class Settings(BaseSettings):
     PROJECT_NAME: str = "Jira Clone lx"
     PROJECT_VERSION: str = "1.0.0"
 
