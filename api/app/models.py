@@ -88,6 +88,9 @@ class Project(ModelBase):
     description = Column(Text)
     category = Column(String, nullable=False)
 
+    users = relationship("User", back_populates="project")
+    issues = relationship("Issue", back_populates="project")
+
 
 class Issue(ModelBase):
     __tablename__ = "issue"
@@ -106,8 +109,9 @@ class Issue(ModelBase):
     reporterId = Column(Integer, nullable=False)
     projectId = Column(ForeignKey("project.id"), nullable=False)
 
-    project = relationship("Project")
-    user = relationship("User", secondary="issue_users_user")
+    project = relationship("Project", foreign_keys="Issue.projectId")
+    users = relationship("User", secondary="issue_users_user")
+    comments = relationship("Comment", back_populates="issue")
 
 
 class User(ModelBase):
@@ -119,7 +123,13 @@ class User(ModelBase):
 
     projectId = Column(ForeignKey("project.id"))
 
-    project = relationship("Project")
+    project = relationship(
+        "Project",
+        foreign_keys="User.projectId",
+        # back_populates="project",
+    )
+    issue = relationship("Issue", secondary="issue_users_user")
+    # comment = relationship("Comment", back_populates="comment")
 
 
 class Comment(ModelBase):
@@ -130,8 +140,8 @@ class Comment(ModelBase):
     userId = Column(ForeignKey("user.id"), nullable=False)
     issueId = Column(ForeignKey("issue.id", ondelete="CASCADE"), nullable=False)
 
-    issue = relationship("Issue")
-    user = relationship("User")
+    user = relationship("User", foreign_keys="Comment.userId")
+    issue = relationship("Issue", foreign_keys="Comment.issueId")
 
 
 t_issue_users_user = Table(
@@ -145,6 +155,10 @@ t_issue_users_user = Table(
         index=True,
     ),
     Column(
-        "userId", ForeignKey("user.id"), primary_key=True, nullable=False, index=True
+        "userId",
+        ForeignKey("user.id"),
+        primary_key=True,
+        nullable=False,
+        index=True,
     ),
 )

@@ -19,14 +19,14 @@ class BaseShowSchema(BaseModel):
         orm_mode = True
 
 
-class ProjectBaseSchema(BaseModel):
+class UserBaseSchema(BaseModel):
     name: str
-    url: str
-    description: str
-    category: str
+    email: EmailStr
+    avatarUrl: str | None
+    projectId: int | None
 
 
-class ProjectShowSchema(ProjectBaseSchema, BaseShowSchema):
+class UserShowSchema(UserBaseSchema, BaseShowSchema):
     ...
 
 
@@ -36,15 +36,33 @@ class IssueBaseSchema(BaseModel):
     status: str
     priority: str
     listPosition: float
-    description: str
-    descriptionText: str
-    estimate: int
-    timeSpent: int
+    reporterId: int
+    description: str | None
+    descriptionText: str | None
+    estimate: int | None
+    timeSpent: int | None
     timeRemaining: int | None
 
 
 class IssueShowSchema(IssueBaseSchema, BaseShowSchema):
+    userIds: list[int] | None
     ...
+
+
+class ProjectBaseSchema(BaseModel):
+    name: str
+    url: str | None
+    description: str | None
+    category: str | None
+
+
+class ProjectShowSchema(ProjectBaseSchema, BaseShowSchema):
+    users: list[UserShowSchema]
+    issues: list[IssueShowSchema]
+
+
+class OneProject(BaseModel):
+    project: ProjectShowSchema
 
 
 class CommentBaseSchema(BaseModel):
@@ -54,15 +72,4 @@ class CommentBaseSchema(BaseModel):
 
 
 class CommentShowSchema(CommentBaseSchema, BaseShowSchema):
-    ...
-
-
-class UserBaseSchema(BaseModel):
-    name: str
-    email: str
-    avatarUrl: str
-    projectId: int | None
-
-
-class UserShowSchema(UserBaseSchema, BaseShowSchema):
     ...

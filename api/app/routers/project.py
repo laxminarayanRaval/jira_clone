@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.schema import ProjectShowSchema, ProjectBaseSchema
+from app.schema import ProjectShowSchema, ProjectBaseSchema, OneProject
 from app.models import Project, get_db
 
 router = APIRouter()
@@ -15,10 +15,10 @@ def create_project(project_data: ProjectBaseSchema, db: Session = Depends(get_db
     return project_obj
 
 
-@router.get("/{pk}", response_model=ProjectShowSchema)
+@router.get("/{pk}", response_model=OneProject)
 def get_project_by_id(pk, db: Session = Depends(get_db)):
     project = Project.get(pk, db)
-    return project
+    return {"project": project}
 
 
 @router.get("/", response_model=list[ProjectShowSchema])
