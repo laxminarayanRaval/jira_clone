@@ -57,10 +57,10 @@ const filterIssues = (projectIssues, filters, currentUserId) => {
     issues = issues.filter(issue => issue.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }
   if (userIds.length > 0) {
-    issues = issues.filter(issue => intersection(issue.userIds, userIds).length > 0);
+    issues = issues.filter(issue => intersection(issue.userIds || [], userIds).length > 0);
   }
   if (myOnly && currentUserId) {
-    issues = issues.filter(issue => issue.userIds.includes(currentUserId));
+    issues = issues.filter(issue => (issue.userIds || []).includes(currentUserId));
   }
   if (recent) {
     issues = issues.filter(issue => moment(issue.updatedAt).isAfter(moment().subtract(3, 'days')));
