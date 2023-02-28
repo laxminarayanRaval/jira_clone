@@ -14,7 +14,7 @@ const propTypes = {
 const ProjectBoardIssueDetailsDelete = ({ issue, fetchProject, modalClose }) => {
   const handleIssueDelete = async () => {
     try {
-      await api.delete(`/issues/${issue.id}`);
+      await api.delete(`/issue/${issue.id}`); // /issues/${issueId}
       await fetchProject();
       modalClose();
     } catch (error) {

@@ -21,7 +21,7 @@ const Project = () => {
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search');
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
 
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project/2');
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/project/1'); // /project
 
   if (!data) return <PageLoader />;
   if (error) return <PageError />;

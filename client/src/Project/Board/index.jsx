@@ -45,7 +45,7 @@ const ProjectBoard = ({ project, fetchProject, updateLocalProjectIssues }) => {
         updateLocalProjectIssues={updateLocalProjectIssues}
       />
       <Route
-        path={`${match.path}/issues/:issueId`}
+        path={`${match.path}/issue/:issueId`} // issues/:issueId
         render={routeProps => (
           <Modal
             isOpen

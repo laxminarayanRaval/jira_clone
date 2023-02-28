@@ -85,7 +85,8 @@ const ProjectIssueSearch = ({ project }) => {
 };
 
 const renderIssue = issue => (
-  <Link key={issue.id} to={`/project/board/issues/${issue.id}`}>
+  <Link key={issue.id} to={`/project/board/issue/${issue.id}`}>
+    {/* /issues/${issueId} */}
     <Issue>
       <IssueTypeIcon type={issue.type} size={25} />
       <IssueData>

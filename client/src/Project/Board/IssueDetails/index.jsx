@@ -33,7 +33,7 @@ const ProjectBoardIssueDetails = ({
   updateLocalProjectIssues,
   modalClose,
 }) => {
-  const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issues/${issueId}`);
+  const [{ data, error, setLocalData }, fetchIssue] = useApi.get(`/issue/${issueId}`); // /issues/${issueId}
 
   if (!data) return <Loader />;
   if (error) return <PageError />;
@@ -44,7 +44,7 @@ const ProjectBoardIssueDetails = ({
     setLocalData(currentData => ({ issue: { ...currentData.issue, ...fields } }));
 
   const updateIssue = updatedFields => {
-    api.optimisticUpdate(`/issues/${issueId}`, {
+    api.optimisticUpdate(`/issue/${issueId}`, { // /issues/${issueId}
       updatedFields,
       currentFields: issue,
       setLocalData: fields => {

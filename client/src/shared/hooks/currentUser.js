@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import useApi from 'shared/hooks/api';
 
 const useCurrentUser = ({ cachePolicy = 'cache-only' } = {}) => {
-  const [{ data }] = useApi.get('/user/2', {}, { cachePolicy });
+  const [{ data }] = useApi.get('/user/currentUser', {}, { cachePolicy }); // /currentUser
 
   return {
     currentUser: get(data, 'currentUser'),
