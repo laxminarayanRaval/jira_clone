@@ -1,6 +1,8 @@
 from pydantic import BaseModel, EmailStr
 import datetime
 
+from app.constants import ProjectCategory, IssueType, IssueStatus, IssuePriority
+
 
 class EmailSchema(BaseModel):
     mail_to: list[EmailStr]
@@ -32,9 +34,9 @@ class UserShowSchema(UserBaseSchema, BaseShowSchema):
 
 class IssueBaseSchema(BaseModel):
     title: str
-    type: str
-    status: str
-    priority: str
+    type: IssueType
+    status: IssueStatus
+    priority: IssuePriority
     listPosition: float
     reporterId: int
     description: str | None
@@ -53,7 +55,7 @@ class ProjectBaseSchema(BaseModel):
     name: str
     url: str | None
     description: str | None
-    category: str | None
+    category: ProjectCategory | None
 
 
 class ProjectShowSchema(ProjectBaseSchema, BaseShowSchema):

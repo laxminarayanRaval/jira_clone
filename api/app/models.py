@@ -12,7 +12,7 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.sql import func
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from app.config import settings
 
 
@@ -29,7 +29,7 @@ def get_db():
 
 
 def create_tables():
-    print("creating tables......")
+    print("creating tables............")
     metadata.create_all(bind=engine)
 
 

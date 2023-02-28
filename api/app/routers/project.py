@@ -18,7 +18,9 @@ def create_project(project_data: ProjectBaseSchema, db: Session = Depends(get_db
 @router.get("/{pk}", response_model=OneProject)
 def get_project_by_id(pk, db: Session = Depends(get_db)):
     project = Project.get(pk, db)
-    return {"project": project}
+    if project:
+        return {"project": project}
+    raise HTTPException(status_code=404, detail=f"Project not found with ID #{pk}")
 
 
 @router.get("/", response_model=list[ProjectShowSchema])

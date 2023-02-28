@@ -5,8 +5,8 @@ from fastapi.security import OAuth2AuthorizationCodeBearer
 from app.config import settings, google_credentials, email_configuration, template_env
 from app.schema import EmailSchema
 from app.routers import api_router
-# from app.models import create_tables
-
+from app.models import create_tables
+from app.seeding import data_seeder
 
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
@@ -41,17 +41,15 @@ def start_application():
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
     app.include_router(api_router)
     # configure_static(app)
-    # create_tables()  # new
+    create_tables()  # new
+    data_seeder()
     return app
 
 
 app = start_application()
 
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
+origins = ["http://localhost", "http://localhost:8080", "http://localhost:8082"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -15,6 +15,13 @@ def create_user(user_data: UserBaseSchema, db: Session = Depends(get_db)):
     return user_obj
 
 
+@router.get("/currentUser")
+def get_current_user(db: Session = Depends(get_db)):
+    current_user = get_user_by_id(1, db)
+
+    return {"current_user": current_user}
+
+
 @router.get("/{pk}", response_model=UserShowSchema)
 def get_user_by_id(pk, db: Session = Depends(get_db)):
     user = User.get(pk, db)

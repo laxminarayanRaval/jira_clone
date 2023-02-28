@@ -15,9 +15,11 @@ def create_issue(issue_data: IssueBaseSchema, db: Session = Depends(get_db)):
     return issue_obj
 
 
-@router.get("/{pk}", response_model=IssueShowSchema)
+@router.get("/{pk}")  # , response_model=IssueShowSchema
 def get_issue_by_id(pk, db: Session = Depends(get_db)):
     issue = Issue.get(pk, db)
+    # issue.get("users")
+    print("-" * 30, issue)
     return issue
 
 
