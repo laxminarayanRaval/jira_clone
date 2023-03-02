@@ -28,11 +28,6 @@ def get_db():
         db.close()
 
 
-def create_tables():
-    print("creating tables............")
-    metadata.create_all(bind=engine)
-
-
 @as_declarative()
 class ModelBase:
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -78,6 +73,11 @@ class ModelBase:
 
 
 metadata = ModelBase.metadata
+
+
+def create_tables():
+    print("creating tables............")
+    metadata.create_all(bind=engine)
 
 
 class Project(ModelBase):
