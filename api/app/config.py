@@ -14,7 +14,7 @@ google_credentials = {
         "client_secret": "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",
         "redirect_uris": [
             "http://127.0.0.1:8008/",
-            "http://127.0.0.1:8008/login/google/callback",
+            "http://127.0.0.1:8008/api/auth/google/callback",
         ],
         "javascript_origins": ["http://127.0.0.1:8008"],
     }
